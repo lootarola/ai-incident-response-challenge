@@ -1,0 +1,9 @@
+FROM cgr.dev/chainguard/go:latest
+ENV PATH="/root/go/bin:${PATH}"
+RUN go install github.com/air-verse/air@latest
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+EXPOSE 8080
+ENTRYPOINT []
+CMD ["/root/go/bin/air", "--build.cmd", "go build -tags 'mongo gin mockdb mockserver' -o ./tmp/main ./cmd/api", "--build.include_ext", "go"]
